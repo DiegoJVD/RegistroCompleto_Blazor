@@ -1,0 +1,104 @@
+﻿@page "/Estudiantes"
+
+@inject IToastService toast
+
+<EditForm Model="Estudiante" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator/>
+        <div class="card">
+            <div class="card-header">
+                Registro de Estudiante
+            </div>
+            <div class="card-body">
+                <form>
+                    @*Estudiante*@
+                    <div >
+                        <label class="form-label">Id</label>
+                        <input class="form-control" @bind="@Estudiante.EstudianteID" />
+                        <button class="btn btn-warning" type="button" @onclick="Buscar">Buscar </button>
+
+                    </div>
+                    <div >
+                        <label class="form-label">Nombre</label>
+                        <input class="form-control" @bind="@Estudiante.Nombres" />
+                    </div>
+                    <div>
+                        <label class="form-label">Semestre</label>
+                        <input class="form-control" @bind="@Estudiante.Semestre"/>
+                    </div>
+                  
+                </form>
+            </div>
+            <div class="card-footer">
+
+                <div class="form-group text-center" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">Nuevo</button>
+                    <button type="submit" class="btn btn-lg btn-success">Guardar</button>
+                    <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar">Eliminar</button>
+
+                </div>
+
+            </div>
+        </div>
+</EditForm>
+
+@code {
+
+    public int EstudianteId { get; set; }
+
+    private Estudiantes Estudiante = new Estudiantes();
+
+    protected override void OnInitialized()
+    {
+
+        Nuevo();
+
+        Buscar();
+
+    }
+
+    public void Nuevo()
+    {
+        Estudiante = new Estudiantes();
+    }
+
+    private void Buscar()
+    {
+        var encontrado = EstudiantesBLL.Buscar(Estudiante.EstudianteID);
+
+        if (encontrado != null)
+            this.Estudiante = encontrado;
+        else
+            toast.ShowWarning("El estudiante no encontrada");
+    }
+
+    public void Guardar()
+    {
+        bool guardo;
+
+        guardo = EstudiantesBLL.Guardar(Estudiante);
+
+        if (guardo)
+        {
+            Nuevo();
+            toast.ShowSuccess("Guardado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible guardar");
+    }
+
+    public void Eliminar()
+    {
+        bool elimino;
+
+        elimino = EstudiantesBLL.Eliminar(Estudiante.EstudianteID);
+
+        if (elimino)
+        {
+            Nuevo();
+            toast.ShowSuccess("Eliminado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible eliminar");
+    }
+
+}
