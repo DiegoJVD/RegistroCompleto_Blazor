@@ -1,0 +1,153 @@
+﻿@page "/Prestamos"
+
+@inject IToastService toast
+
+<EditForm Model="Prestamo" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+
+    <div class="card">
+        <div class="card-header">
+            Registro de Persona
+        </div>
+        <div class="card-body">
+            <form>
+                @*Prestamo*@
+                <div>
+                    <label class="form-label ">Id</label>
+                </div>
+                <div class="input-group my-2">
+
+                    <input class="form-control" @bind="@Prestamo.PrestamoId" />
+                    <button type="button" class="btn btn-warning" @onclick="Buscar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                        </svg>Buscar
+                    </button>
+                </div>
+
+                @*Fecha*@
+                <div>
+                    <label class="form-label">Fecha</label>
+                    <InputDate class="form-control" @bind-Value="Prestamo.Fecha" />
+                </div>
+                <ValidationMessage For="@(()=> Prestamo.Fecha)" />
+
+                @*Persona*@
+                <div>
+                    <label class="form-label">Persona</label>
+                    <InputSelect class="form-control" @bind-Value="Prestamo.PersonaId">
+                        @foreach (var persona in Personas)
+                        {
+                        <option value="@persona.PersonaId">@persona.PersonaId - @persona.Nombres @persona.Apellidos </option>
+                        }
+                    </InputSelect>
+                </div>
+                <ValidationMessage For="@(()=> Prestamo.PersonaId)" />
+
+                @*Concepto*@
+
+                <div>
+                    <label class="form-label">Concepto</label>
+                    <input class="form-control" @bind="Prestamo.Concepto" />
+                </div>
+                <ValidationMessage For="@(()=> Prestamo.Concepto)" />
+
+                @*Monto*@
+                <div>
+                    <label class="form-label">Monto</label>
+                    <input class="form-control" @bind="Prestamo.Monto" />
+                </div>
+                <ValidationMessage For="@(()=> Prestamo.Monto)" />
+
+                @*Balance*@
+                <div>
+                    <label class="form-label">Balance</label>
+                    <input class="form-control" @bind="Prestamo.Balance" readonly/>
+                </div>
+              
+                <ValidationMessage For="@(()=> Prestamo.Balance)" />
+
+
+            </form>
+        </div>
+
+        <div class="card-footer">
+
+            <div class="form-group text-center" display: inline-block>
+                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-plus-fill" viewBox="0 0 16 16">
+                        <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM8.5 7v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 1 0z" />
+                    </svg> Nuevo
+                </button>
+                <button type="submit" class="btn btn-lg btn-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save-fill" viewBox="0 0 16 16">
+                        <path d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v7.793L4.854 6.646a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l3.5-3.5a.5.5 0 0 0-.708-.708L8.5 9.293V1.5z" />
+                    </svg> Guardar
+                </button>
+                <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+                    </svg> Eliminar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+    
+</EditForm>
+
+@code {
+
+    public int PrestamoId { get; set; }
+    private Prestamos Prestamo = new Prestamos();
+    public List<Personas> Personas { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Prestamo.Fecha = DateTime.Now;
+        Personas = PersonasBLL.GetList(p => true);
+    }
+
+    public void Nuevo()
+    {
+        Prestamo = new Prestamos();
+    }
+
+    private void Buscar()
+    {
+        var encontrado = PrestamosBLL.Buscar(Prestamo.PrestamoId);
+
+        if (encontrado != null)
+            this.Prestamo = encontrado;
+        else
+            toast.ShowWarning("El Préstamo no fue encontrado");
+    }
+
+    public void Guardar()
+    {
+        bool guardado = PrestamosBLL.Guardar(Prestamo);
+
+        if (guardado)
+        {
+            Nuevo();
+            toast.ShowSuccess("Prestamo guardado correctamente");
+        }
+        else
+            toast.ShowError("No se pudo guardar el Préstamo");
+    }
+
+    public void Eliminar()
+    {
+        bool eliminado = PrestamosBLL.Eliminar(Prestamo.PrestamoId);
+
+        if (eliminado)
+        {
+            Nuevo();
+            toast.ShowSuccess("Préstamo eliminado correctamente");
+        }
+        else
+            toast.ShowError("No se pudo eliminar el Préstamo");
+    }
+}

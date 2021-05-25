@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RegistroCompleto_Blazor.DAL;
-using RegistroCompleto_Blazor.Data;
+
 namespace RegistroCompleto_Blazor
 
 {

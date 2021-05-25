@@ -9,6 +9,8 @@ namespace RegistroCompleto_Blazor.DAL
     public class Contexto : DbContext
     {
         public DbSet<Estudiantes> Estudiante { get; set; }
+        public DbSet<Personas> Personas { get; set; }
+        public DbSet<Prestamos> Prestamos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
