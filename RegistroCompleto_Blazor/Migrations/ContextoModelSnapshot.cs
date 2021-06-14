@@ -83,9 +83,6 @@ namespace RegistroCompleto_Blazor.Migrations
                     b.Property<decimal>("Monto")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Mora")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("PersonaId")
                         .HasColumnType("INTEGER");
 

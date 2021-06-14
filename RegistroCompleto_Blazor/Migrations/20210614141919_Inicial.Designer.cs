@@ -9,7 +9,7 @@ using RegistroCompleto_Blazor.DAL;
 namespace RegistroCompleto_Blazor.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20210525024347_Inicial")]
+    [Migration("20210614141919_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,9 +83,6 @@ namespace RegistroCompleto_Blazor.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Monto")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Mora")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("PersonaId")
