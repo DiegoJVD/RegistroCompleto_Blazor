@@ -21,8 +21,11 @@ namespace RegistroCompleto_Blazor.Models
 
         public decimal Balance { get; set; }
 
+        public decimal Mora { get; set; }
+
         public Prestamos()
         {
+            Mora = 0;
         }
     }
 }
