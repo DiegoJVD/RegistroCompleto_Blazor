@@ -25,6 +25,20 @@ namespace RegistroCompleto_Blazor.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Moras",
+                columns: table => new
+                {
+                    MoraId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Fecha = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Total = table.Column<decimal>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Moras", x => x.MoraId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Personas",
                 columns: table => new
                 {
@@ -40,6 +54,27 @@ namespace RegistroCompleto_Blazor.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MorasDetalle",
+                columns: table => new
+                {
+                    MorasDetalleId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    MoraId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PrestamoId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Valor = table.Column<decimal>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MorasDetalle", x => x.MorasDetalleId);
+                    table.ForeignKey(
+                        name: "FK_MorasDetalle_Moras_MoraId",
+                        column: x => x.MoraId,
+                        principalTable: "Moras",
+                        principalColumn: "MoraId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Prestamos",
                 columns: table => new
                 {
@@ -49,7 +84,8 @@ namespace RegistroCompleto_Blazor.Migrations
                     PersonaId = table.Column<int>(type: "INTEGER", nullable: false),
                     Concepto = table.Column<string>(type: "TEXT", nullable: true),
                     Monto = table.Column<decimal>(type: "TEXT", nullable: false),
-                    Balance = table.Column<decimal>(type: "TEXT", nullable: false)
+                    Balance = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Mora = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -63,6 +99,11 @@ namespace RegistroCompleto_Blazor.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_MorasDetalle_MoraId",
+                table: "MorasDetalle",
+                column: "MoraId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Prestamos_PersonaId",
                 table: "Prestamos",
                 column: "PersonaId");
@@ -74,7 +115,13 @@ namespace RegistroCompleto_Blazor.Migrations
                 name: "Estudiante");
 
             migrationBuilder.DropTable(
+                name: "MorasDetalle");
+
+            migrationBuilder.DropTable(
                 name: "Prestamos");
+
+            migrationBuilder.DropTable(
+                name: "Moras");
 
             migrationBuilder.DropTable(
                 name: "Personas");

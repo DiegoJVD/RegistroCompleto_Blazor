@@ -45,6 +45,45 @@ namespace RegistroCompleto_Blazor.Migrations
                     b.ToTable("Estudiante");
                 });
 
+            modelBuilder.Entity("RegistroCompleto_Blazor.Models.Moras", b =>
+                {
+                    b.Property<int>("MoraId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("MoraId");
+
+                    b.ToTable("Moras");
+                });
+
+            modelBuilder.Entity("RegistroCompleto_Blazor.Models.MorasDetalle", b =>
+                {
+                    b.Property<int>("MorasDetalleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MoraId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PrestamoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("MorasDetalleId");
+
+                    b.HasIndex("MoraId");
+
+                    b.ToTable("MorasDetalle");
+                });
+
             modelBuilder.Entity("RegistroCompleto_Blazor.Models.Personas", b =>
                 {
                     b.Property<int>("PersonaId")
@@ -83,6 +122,9 @@ namespace RegistroCompleto_Blazor.Migrations
                     b.Property<decimal>("Monto")
                         .HasColumnType("TEXT");
 
+                    b.Property<decimal>("Mora")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("PersonaId")
                         .HasColumnType("INTEGER");
 
@@ -93,6 +135,15 @@ namespace RegistroCompleto_Blazor.Migrations
                     b.ToTable("Prestamos");
                 });
 
+            modelBuilder.Entity("RegistroCompleto_Blazor.Models.MorasDetalle", b =>
+                {
+                    b.HasOne("RegistroCompleto_Blazor.Models.Moras", null)
+                        .WithMany("Detalle")
+                        .HasForeignKey("MoraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("RegistroCompleto_Blazor.Models.Prestamos", b =>
                 {
                     b.HasOne("RegistroCompleto_Blazor.Models.Personas", null)
@@ -100,6 +151,11 @@ namespace RegistroCompleto_Blazor.Migrations
                         .HasForeignKey("PersonaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("RegistroCompleto_Blazor.Models.Moras", b =>
+                {
+                    b.Navigation("Detalle");
                 });
 
             modelBuilder.Entity("RegistroCompleto_Blazor.Models.Personas", b =>

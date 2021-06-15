@@ -17,11 +17,11 @@ namespace RegistroCompleto_Blazor.Models
 
         public decimal Valor { get; set; }
 
-        public MorasDetalle(int moraId, int prestamoId, decimal valor)
+       /* public MorasDetalle(int moraId, int prestamoId, decimal valor)
         {
             MoraId = moraId;
             PrestamoId = prestamoId;
             Valor = valor;
-        }
+        }*/
     }
 }
